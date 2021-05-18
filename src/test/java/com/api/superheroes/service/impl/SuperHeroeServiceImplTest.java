@@ -11,7 +11,10 @@ import com.api.superheroes.service.SuperHeroeService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,7 +43,18 @@ class SuperHeroeServiceImplTest {
     List<SuperHeroe> listSuperHeroes = Arrays.asList(new SuperHeroe(1L, "Batman", "", true), new SuperHeroe(2L, "Spiderman", "", true),
         new SuperHeroe(3L, "SuperMan", "", true));
     String nombre = "man";
-    when(repo.findByNombreContainingIgnoreCase(nombre)).thenReturn(listSuperHeroes);
+    when(repo.findByNombreContainingIgnoreCase(nombre)).then(new Answer<List<SuperHeroe>>() {
+      @Override
+      public List<SuperHeroe> answer(InvocationOnMock invocation) throws Throwable {
+        List<SuperHeroe> listSuper = new ArrayList<SuperHeroe>();
+        for (SuperHeroe superHeroe : listSuperHeroes) {
+          if (superHeroe.getNombre().toLowerCase().contains(nombre)) {
+            listSuper.add(superHeroe);
+          }
+        }
+        return listSuper;
+      }
+    });
     List<SuperHeroe> listSuperHeroesActual = servicio.findByNombreHeroe(nombre);
     System.out.println("lista: " + listSuperHeroesActual);
     assertEquals(3, listSuperHeroes.size());
