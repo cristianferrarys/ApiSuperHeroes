@@ -1,17 +1,22 @@
-# Api Súper Héroe
-Api Súper Héroe CRUD
-## Requerimientos
-- Maven ([Apache Maven][maven], 3.6.3 recomendada), con la configuracion para nuestro repositorio de [Artifactory][artifactory].
-- Java ([OpenJDK 11 (LTS)][adoptopenjdk])
-- Project Lombok instalado en el IDE ([descarga][projectlombok])
-- Apache Tomcat 9 ([descarga][Apache Tomcat 9])
-- Libreria H2
-
-Como alternativa a la instalación manual de Java y Maven, se puede usar [SDKMAN!][SDKMAN!].
-
-Dependencias utilizadas .
-
-```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.5</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.api.superheroes</groupId>
+	<artifactId>ApiSuperHeroes</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>ApiSuperHeroes</name>
+	<description>Api SuperHeroes</description>
+	<properties>
+		<java.version>11</java.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -21,6 +26,7 @@ Dependencias utilizadas .
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -67,29 +73,22 @@ Dependencias utilizadas .
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-```
 
-## Correr build localmente
-Para correr bajar las dependencias, se debe verificar localmente con el siguiente comando:
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
-```bash
-$ cd ApiSuperHeroes/
-$ mvn clean install
-```
-
-## Ver api cliente con Swagger2 
-Una vez levantado el proyecto abrir un navegador:
-```bash
- http://localhost:8080/swagger-ui.html
-```
-## Levantar con docker 
-
-Generar el jar primero:
-
-```bash
-$ cd ApiSuperHeroes/
-$ mvn clean install
-$ docker build -t api-super-heroes .
-$ docker run --rm -it -p 8080:8080 api-super-heroes
-```
-
+</project>
